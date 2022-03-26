@@ -4,8 +4,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Login options
 
-username: admin@email.com
-password: admin
+* username: admin@email.com
+* password: admin
 
 
 ## Available Scripts
