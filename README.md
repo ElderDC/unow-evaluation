@@ -6,6 +6,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm lint:fix`
+
+Run the code formatter to clean up possible line break errors configured by git.
+
 ### `npm start`
 
 Runs the app in the development mode.\
