@@ -6,6 +6,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm install`
+
+Run npm install to add all project dependencies
+
 ### `npm lint:fix`
 
 Run the code formatter to clean up possible line break errors configured by git.
