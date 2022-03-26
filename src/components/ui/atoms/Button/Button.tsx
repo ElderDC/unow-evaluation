@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 import React from 'react'
 import PropTypes from 'prop-types'
 
@@ -106,6 +107,8 @@ function Button(props: ButtonProps): JSX.Element {
             classNames.push('w-full')
         }
     }
+
+    setSize()
 
     if (className) {
         classNames.unshift(className)
