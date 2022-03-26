@@ -1,5 +1,5 @@
 module.exports = {
-    content: ['./src/**/*.{js,jsx,ts,tsx}'],
+    content: ['./src/**/*.{js,jsx,ts,tsx}', './public/**/*.html'],
     theme: {
         extend: {
             backgroundColor: {
@@ -37,25 +37,6 @@ module.exports = {
             '2wide': '.05em',
             '3wide': '.075em',
             '4wide': '.1em',
-        },
-    },
-    variants: {
-        extend: {
-            backgroundColor: [
-                'active',
-                'checked',
-                'even',
-                'group-focus',
-                'odd',
-            ],
-            backgroundOpacity: ['active'],
-            borderColor: ['checked'],
-            borderWidth: ['first', 'last'],
-            boxShadow: ['active'],
-            divideColor: ['group-hover'],
-            fontSize: ['hover', 'focus'],
-            opacity: ['disabled'],
-            scale: ['focus-within'],
         },
     },
     plugins: [],
