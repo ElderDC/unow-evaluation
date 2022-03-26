@@ -10,7 +10,7 @@ In the project directory, you can run:
 
 Run npm install to add all project dependencies
 
-### `npm lint:fix`
+### `npm run lint:fix`
 
 Run the code formatter to clean up possible line break errors configured by git.
 
