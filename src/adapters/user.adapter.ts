@@ -8,3 +8,7 @@ export const createUserAdapter = (data: any): User => ({
     phone: data.phone,
     role: data.role,
 })
+
+export const createUserListAdapter = (data: any): User[] => {
+    return data.map((user: any) => createUserAdapter(user))
+}

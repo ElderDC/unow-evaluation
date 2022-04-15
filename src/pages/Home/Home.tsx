@@ -6,14 +6,16 @@ import UserCard from 'components/UserCard'
 import UserService from 'services/UserService'
 import { Text } from 'components/ui/atoms'
 import { Header } from 'components/ui/organisms'
+import { createUserListAdapter } from 'adapters'
 
 function Home(props: any): JSX.Element {
     const [search, setSearch] = useState<string>('')
-    const [users, setUser] = React.useState<User[]>([])
+    const [users, setUsers] = React.useState<User[]>([])
 
     const getAllUsers = async (): Promise<void> => {
         const data = await UserService.getAll(search)
-        setUser(data)
+        const adaptedUsers = createUserListAdapter(data)
+        setUsers(adaptedUsers)
     }
 
     useEffect(() => {
