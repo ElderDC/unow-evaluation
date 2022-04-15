@@ -1,9 +1,9 @@
 import React from 'react'
-import { IUser } from 'models/User'
+import { User } from 'models'
 import { Text } from 'components/ui/atoms'
 
 type UserCardProps = {
-    user: IUser
+    user: User
 }
 
 function UserCard(props: UserCardProps): JSX.Element {
@@ -22,7 +22,9 @@ function UserCard(props: UserCardProps): JSX.Element {
                     />
                 </div>
                 <div className="flex flex-col">
-                    <Text size="subtitle2">{`${user.firstName} ${user.lastName}`}</Text>
+                    <Text size="subtitle2">
+                        {`${user.firstName} ${user.lastName}`}
+                    </Text>
                     <Text size="body1">{user.role}</Text>
                     <Text size="caption">{user.phone}</Text>
                     <Text size="caption">{user.email}</Text>

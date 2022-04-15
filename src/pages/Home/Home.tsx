@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Text } from 'components/ui/atoms'
-import { actionCreators as authActionCreators } from 'store/reducers/auth'
 import { connect } from 'react-redux'
-import { AppState } from 'store'
-import UserService from 'services/UserService'
-import { useNavigate } from 'react-router-dom'
-import { IUser } from 'models/User'
+import { AppStore } from 'redux/store'
+import { User } from 'models'
 import UserCard from 'components/UserCard'
+import UserService from 'services/UserService'
+import { Text } from 'components/ui/atoms'
+import { Header } from 'components/ui/organisms'
 
 function Home(props: any): JSX.Element {
-    const { logout, isAuthenticated, authUser } = props
-    const navigate = useNavigate()
     const [search, setSearch] = useState<string>('')
-    const [users, setUser] = React.useState<IUser[]>([])
+    const [users, setUser] = React.useState<User[]>([])
 
     const getAllUsers = async (): Promise<void> => {
-        const data = UserService.getAll(search)
+        const data = await UserService.getAll(search)
         setUser(data)
     }
 
@@ -24,13 +21,13 @@ function Home(props: any): JSX.Element {
     }, [])
 
     useEffect(() => {
-        getAllUsers()
+        const currentSearch = search
+        setTimeout(() => {
+            if (currentSearch === search) {
+                getAllUsers()
+            }
+        }, 1000)
     }, [search])
-
-    const handleLogout = (): void => {
-        logout()
-        navigate('/login')
-    }
 
     const handleSearch = (event: React.ChangeEvent<HTMLInputElement>): any => {
         const { value } = event.target
@@ -39,14 +36,7 @@ function Home(props: any): JSX.Element {
 
     return (
         <div>
-            <div className="w-screen p-4 bg-primary text-white">
-                <div className="flex items-center justify-between">
-                    <Text size="subtitle2">Endalia HR</Text>
-                    <Button onClick={handleLogout}>
-                        <Text>logout</Text>
-                    </Button>
-                </div>
-            </div>
+            <Header />
             <div className="p-4">
                 <div className="mb-4">
                     <Text size="h6">Directorio de empleados</Text>
@@ -69,7 +59,7 @@ function Home(props: any): JSX.Element {
                             'repeat(auto-fill, minmax(49%, 1fr))',
                     }}
                 >
-                    {users.map((user: IUser) => (
+                    {users.map((user: User) => (
                         <UserCard user={user} key={user.id} />
                     ))}
                 </div>
@@ -78,14 +68,7 @@ function Home(props: any): JSX.Element {
     )
 }
 
-const mapActionsToProps = (dispatch: any): any => ({
-    logout: (email: string, password: string) =>
-        dispatch(authActionCreators.logout()),
-})
-
-const mapStateToProps = (state: AppState): any => ({
-    isAuthenticated: state.auth.isAuthenticated,
-    authUser: state.auth.user,
-})
+const mapStateToProps = (state: AppStore): any => ({})
+const mapActionsToProps = (dispatch: any): any => ({})
 
 export default connect(mapStateToProps, mapActionsToProps)(Home)

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Navigate } from 'react-router-dom'
-import { AppState } from 'store'
+import { AppStore } from 'redux/store'
 
 interface GuestRouteProps {
     children: JSX.Element
@@ -15,7 +15,7 @@ function GuestRoute({
     return isAuthenticated ? <Navigate to="/" /> : children
 }
 
-const mapStateToProps = (state: AppState): any => ({
+const mapStateToProps = (state: AppStore): any => ({
     isAuthenticated: state.auth.isAuthenticated,
 })
 

@@ -25,6 +25,7 @@
     "rules": {
         "no-use-before-define": "off",
         "default-param-last": "off",
+        "no-console": ["warn", { "allow": ["warn", "error"] }],
         "jsx-a11y/label-has-associated-control": ["error", {
             "required": {
                 "some": ["nesting", "id"]

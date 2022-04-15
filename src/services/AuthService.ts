@@ -1,7 +1,7 @@
-import { IUser } from 'models/User'
+import { User } from 'models'
 
 class AuthService {
-    private user: IUser
+    private user: User
 
     constructor() {
         this.user = {
@@ -14,9 +14,8 @@ class AuthService {
         }
     }
 
-    login(email: string, password: string): { success: boolean; data?: IUser } {
-        const isValid =
-            this.user.email === 'admin@email.com' && password === 'admin'
+    login(email: string, password: string): { success: boolean; data?: User } {
+        const isValid = email === this.user.email && password === 'admin'
         return {
             success: isValid,
             data: isValid ? this.user : undefined,

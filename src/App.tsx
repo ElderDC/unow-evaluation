@@ -1,45 +1,48 @@
-import React from 'react'
+import React, { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import { Error404, Home, Login } from 'pages'
-import generateStore from 'store'
 import PrivateRoute from 'components/PrivateRoute'
 import GuestRoute from 'components/GuestRoute'
-import { AuthReducerState } from 'store/reducers/auth/auth.types'
+import initStore from 'redux/store'
+import { useLocalStorage } from 'hooks'
+import { User } from 'models'
+
+const Error404 = lazy(() => import('pages/Error404/Error404'))
+const Home = lazy(() => import('pages/Home/Home'))
+const Login = lazy(() => import('pages/Login/Login'))
 
 function App(): JSX.Element {
-    const isAuthenticated = localStorage.getItem('isAuthenticated')
-    const userLocalStorage = localStorage.getItem('user')
+    const [user] = useLocalStorage<User | object>('user', {})
+    const [isAuthenticated] = useLocalStorage<boolean>('isAuthenticated', false)
 
-    const auth: AuthReducerState = {
-        isAuthenticated: isAuthenticated ? JSON.parse(isAuthenticated) : false,
-        user: userLocalStorage ? JSON.parse(userLocalStorage) : null,
-    }
-    const store = generateStore({
-        auth,
+    const store = initStore({
+        auth: { user, isAuthenticated },
     })
+
     return (
-        <Provider store={store}>
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <PrivateRoute isAuthenticated>
-                            <Home />
-                        </PrivateRoute>
-                    }
-                />
-                <Route
-                    path="/login"
-                    element={
-                        <GuestRoute isAuthenticated>
-                            <Login />
-                        </GuestRoute>
-                    }
-                />
-                <Route path="*" element={<Error404 />} />
-            </Routes>
-        </Provider>
+        <Suspense fallback={<div>Loading ...</div>}>
+            <Provider store={store}>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <PrivateRoute isAuthenticated>
+                                <Home />
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/login"
+                        element={
+                            <GuestRoute isAuthenticated>
+                                <Login />
+                            </GuestRoute>
+                        }
+                    />
+                    <Route path="*" element={<Error404 />} />
+                </Routes>
+            </Provider>
+        </Suspense>
     )
 }
 

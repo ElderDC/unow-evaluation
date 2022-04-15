@@ -7,7 +7,6 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 * username: admin@email.com
 * password: admin
 
-
 ## Available Scripts
 
 In the project directory, you can run:

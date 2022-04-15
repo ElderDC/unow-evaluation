@@ -1,7 +1,8 @@
-import { IUser } from 'models/User'
+import { delay, joinDataToSearch } from 'utilities'
+import { User } from 'models'
 
 class UserService {
-    users: IUser[] = [
+    users: User[] = [
         {
             id: 1,
             firstName: 'John1',
@@ -52,30 +53,33 @@ class UserService {
         },
     ]
 
-    getAll(search: string): IUser[] {
+    async getAll(search: string): Promise<User[]> {
+        await delay(300)
         return this.users.filter((item) => {
-            const userLower =
-                `${item.email}${item.firstName}${item.lastName}${item.phone}${item.role}`.toLocaleLowerCase()
-            const searchLower = search
-                .trim()
-                .replace(' ', '')
-                .toLocaleLowerCase()
+            const searchLower = joinDataToSearch(search)
+            const userLower = joinDataToSearch(
+                item.email,
+                item.firstName,
+                item.lastName,
+                item.phone,
+                item.role
+            )
             return userLower.includes(searchLower)
         })
     }
 
-    get(id: number): IUser | null {
-        const user = this.users.find((item: IUser) => item.id === id)
+    get(id: number): User | null {
+        const user = this.users.find((item: User) => item.id === id)
         return user || null
     }
 
-    create(data: IUser): { success: boolean } {
+    create(data: User): { success: boolean } {
         this.users.push(data)
         return { success: true }
     }
 
-    update(id: number, data: IUser): { success: boolean } {
-        const userIndex = this.users.findIndex((item: IUser) => item.id === id)
+    update(id: number, data: User): { success: boolean } {
+        const userIndex = this.users.findIndex((item: User) => item.id === id)
         if (userIndex === -1) {
             return { success: false }
         }
@@ -84,7 +88,7 @@ class UserService {
     }
 
     delete(id: number): { success: boolean } {
-        const userIndex = this.users.findIndex((item: IUser) => item.id === id)
+        const userIndex = this.users.findIndex((item: User) => item.id === id)
         if (userIndex === -1) {
             return { success: false }
         }

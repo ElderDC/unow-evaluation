@@ -2,23 +2,35 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Button, Text } from 'components/ui/atoms'
-import { actionCreators } from 'store/reducers/auth'
-import { AppState } from 'store'
+import { login as loginAction } from 'redux/states/auth.state'
+import { AppStore } from 'redux/store'
+import AuthService from 'services/AuthService'
+import { useLocalStorage } from 'hooks'
+import { User } from 'models'
+import { createUserAdapter } from 'adapters'
 
 function Login(props: any): JSX.Element {
-    const { login, isAuthenticated } = props
+    const { login } = props
     const navigate = useNavigate()
     const [email, setEmail] = React.useState<string>('')
     const [password, setPassword] = React.useState<string>('')
     const [error, setError] = React.useState<string>('')
+    const [, setUser] = useLocalStorage<User>('user')
+    const [, setIsAuthenticated] = useLocalStorage<boolean>('isAuthenticated')
 
-    const handleLogin = (): void => {
+    const handleLogin = async (): Promise<void> => {
         if (!email || !password) {
             setError('Los campos Usuario y Contraseña son requeridos')
             return
         }
-        login(email, password)
-        if (isAuthenticated) {
+
+        const { success, data } = AuthService.login(email, password)
+
+        if (success) {
+            const adaptedUser = createUserAdapter(data)
+            setIsAuthenticated(success)
+            setUser(adaptedUser)
+            login(adaptedUser)
             navigate('/')
         } else {
             setError('Los datos introducidos son incorrectos')
@@ -114,13 +126,9 @@ function Login(props: any): JSX.Element {
     )
 }
 
+const mapStateToProps = (state: AppStore): any => ({})
 const mapActionsToProps = (dispatch: any): any => ({
-    login: (email: string, password: string) =>
-        dispatch(actionCreators.login(email, password)),
-})
-
-const mapStateToProps = (state: AppState): any => ({
-    isAuthenticated: state.auth.isAuthenticated,
+    login: (user: User) => dispatch(loginAction(user)),
 })
 
 export default connect(mapStateToProps, mapActionsToProps)(Login)
